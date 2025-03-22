@@ -1,8 +1,12 @@
+<script setup lang="ts">
+import TheHeader from '@/components/TheHeader.vue'
+import TheFooter from '@/components/TheFooter.vue'
+</script>
 <template>
   <div class="wrap">
-    <header>ヘッダーエリア</header>
+    <TheHeader />
     <main class="main">メインエリア</main>
-    <footer>フッターエリア</footer>
+    <TheFooter />
   </div>
 </template>
 
