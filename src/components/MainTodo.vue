@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 const todo = ref('')
 const todoList = ref<{ id: number; task: string }[]>([])
+const ls = localStorage.todoList
+todoList.value = ls ? JSON.parse(ls) : []
 const addTodo = () => {
   const id = new Date().getTime() //IDは仮でデータ登録時刻を設定
   todoList.value.push({ id: id, task: todo.value })
