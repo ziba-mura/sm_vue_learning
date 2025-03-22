@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+// 編集用の設定
+const isEdit = ref(false)
+let editId = -1
+
 const todo = ref('')
 const todoList = ref<{ id: number; task: string }[]>([])
+
 const ls = localStorage.todoList
 todoList.value = ls ? JSON.parse(ls) : []
+
 const addTodo = () => {
   const id = new Date().getTime() //IDは仮でデータ登録時刻を設定
   todoList.value.push({ id: id, task: todo.value })
@@ -11,11 +17,41 @@ const addTodo = () => {
 
   todo.value = ''
 }
+
+const showTodo = (id: number) => {
+  const findTodo = todoList.value.find((todo) => todo.id == id)
+
+  if (findTodo) {
+    todo.value = findTodo.task
+    isEdit.value = true
+    editId = id
+  }
+}
+
+const editTodo = () => {
+  // 編集対象のTODOとindexを取得
+  const findTodo = todoList.value.find((todo) => todo.id == editId)
+  const idx = todoList.value.findIndex((todo) => todo.id === editId)
+
+  // 編集後の内容で更新
+  if (findTodo) {
+    findTodo.task = todo.value
+    todoList.value.splice(idx, 1, findTodo)
+
+    localStorage.todoList = JSON.stringify(todoList.value)
+
+    //初期値に戻す
+    isEdit.value = false
+    editId = -1
+    todo.value = ''
+  }
+}
 </script>
 <template>
   <div>
     <input type="text" class="todo_input" v-model="todo" placeholder="+ TODOを入力" />
-    <button class="btn" @click="addTodo">追加</button>
+    <button class="btn green" @click="editTodo" v-if="isEdit">変更</button>
+    <button class="btn" @click="addTodo" v-else>追加</button>
   </div>
   <div class="box_list">
     <div class="todo_list" v-for="todo in todoList" :key="todo.id">
@@ -24,7 +60,7 @@ const addTodo = () => {
         <label>{{ todo.task }}</label>
       </div>
       <div class="btns">
-        <div class="btn green">編</div>
+        <div class="btn green" @click="showTodo(todo.id)">編</div>
         <div class="btn pink">削</div>
       </div>
     </div>
