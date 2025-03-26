@@ -3,11 +3,8 @@
 </template>
 
 <style scoped>
-.todo {
-  width: 100%;
+.title {
   padding: 16px 0;
   margin: 0;
-  text-align: center;
-  background-color: #fff;
 }
 </style>

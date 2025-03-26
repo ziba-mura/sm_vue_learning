@@ -25,6 +25,6 @@ import TheFooter from '@/components/TheFooter.vue'
 
 .main {
   flex: 1;
-  pad: 16px;
+  padding: 16px;
 }
 </style>
